@@ -40,6 +40,8 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 - [ ] Implement responsive Navbar with navigation links and cart icon [UI]
 - [ ] Implement main Layout component with header/footer [UI]
 - [ ] Implement global loading and error UI components [UI]
+- [ ] Use sonner (shadcn/ui) for toast/snackbar notifications for cart actions and errors [UI]
+- [ ] For all empty states, show loading spinner while fetching and relevant message if no data [UI]
 
 ---
 
