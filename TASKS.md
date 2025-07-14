@@ -69,11 +69,11 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## Shopping Cart Page
 
-- [ ] Create Shopping Cart page route and layout [UI]
-- [ ] List all items in the cart with thumbnail, name, price, and remove button [UI] [State]
-- [ ] Display total amount for all items in the cart [UI] [State]
-- [ ] Implement remove-from-cart functionality [UI] [State]
-- [ ] Update total as items are added or removed [State]
+- [x] Create Shopping Cart page route and layout [UI]
+- [x] List all items in the cart with thumbnail, name, price, and remove button [UI] [State]
+- [x] Display total amount for all items in the cart [UI] [State]
+- [x] Implement remove-from-cart functionality [UI] [State]
+- [x] Update total as items are added or removed [State]
 
 ---
 

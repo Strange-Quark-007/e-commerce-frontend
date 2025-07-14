@@ -11,6 +11,7 @@ import { useCart } from '../../../hooks/useCart';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Skeleton } from '../../../components/ui/skeleton';
+import { MAX_CART_ITEMS } from '../../../lib/constants';
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -31,9 +32,13 @@ export default function ProductDetailsPage() {
   };
   const handleAddToCart = () => {
     if (quantity >= 1 && product) {
-      addToCart(product.id, quantity);
-      toast.success(`${quantity} item${quantity > 1 ? 's' : ''} added to cart!`);
-      setQuantity(1);
+      const added = addToCart(product.id, quantity, () => {
+        toast.error(`You can only have up to ${MAX_CART_ITEMS} of this item in your cart.`);
+      });
+      if (added) {
+        toast.success(`${quantity} item${quantity > 1 ? 's' : ''} added to cart!`);
+        setQuantity(1);
+      }
     }
   };
 
