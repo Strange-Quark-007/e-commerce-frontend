@@ -6,14 +6,14 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## Project Setup & Tooling
 
-- [ ] Initialize Next.js project with TypeScript and `/src` directory structure [Setup]
-- [ ] Install and configure TailwindCSS [Setup]
-- [ ] Install and configure shadcn/ui [Setup]
-- [ ] Set up ESLint with Next.js + TypeScript config [Setup]
-- [ ] Set up Prettier for code formatting [Setup]
-- [ ] Install and configure Zustand for state management [Setup]
-- [ ] Install and configure React Query for data fetching [Setup]
-- [ ] Set up project README with setup instructions [Setup]
+- [x] Initialize Next.js project with TypeScript and `/src` directory structure [Setup]
+- [x] Install and configure TailwindCSS [Setup]
+- [x] Install and configure shadcn/ui [Setup]
+- [x] Set up ESLint with Next.js + TypeScript config [Setup]
+- [x] Set up Prettier for code formatting [Setup]
+- [x] Install and configure Zustand for state management [Setup]
+- [x] Install and configure React Query for data fetching [Setup]
+- [x] Set up project README with setup instructions [Setup]
 
 ---
 

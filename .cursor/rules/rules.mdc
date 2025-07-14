@@ -13,6 +13,11 @@ alwaysApply: true
 
 # CODING
 
+Act as a senior frontend engineer.
+
+Using `PRD.md`, `TECH-SPEC.md`, `TASKS.md`, and `UX-GUIDELINES.md`, begin implementing the project step-by-step.
+
 - Write clean, readable code
 - Prefer modular and reusable components
 - Match the project's naming and formatting conventions
+- Follow `TASKS.md` in order, and check off tasks as they are completed
