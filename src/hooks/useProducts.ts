@@ -1,3 +1,5 @@
+'use client';
+
 import { useApiQuery } from './useApi';
 import { API_ENDPOINTS } from '../lib/endpoints';
 import type { Product } from '../types';
