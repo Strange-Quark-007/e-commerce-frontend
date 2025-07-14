@@ -20,17 +20,17 @@ export default function ProductCard({ product }: ProductCardProps) {
         <img
           src={product.image}
           alt={product.title}
-          className="object-contain w-full h-48 group-hover:scale-105 transition-transform duration-200"
+          className="object-contain w-full h-44 group-hover:scale-105 transition-transform duration-200"
           loading="lazy"
         />
       </div>
       {/* Divider below image */}
       <div className="border-b border-gray-100" />
-      <div className="p-4 flex flex-col gap-1">
+      <div className="p-3 flex flex-col gap-1">
         <h2 className="text-base font-semibold text-gray-900 truncate" title={product.title}>
           {product.title}
         </h2>
-        <div className="mb-1">
+        <div>
           <span
             className="inline-block px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600"
             title={toTitleCase(product.category)}
@@ -38,9 +38,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             {toTitleCase(product.category)}
           </span>
         </div>
-        <div className="text-lg font-bold text-primary mt-1">${product.price.toFixed(2)}</div>
+        <div className="text-lg font-bold text-primary">${product.price.toFixed(2)}</div>
         {product.rating && (
-          <div className="flex items-center gap-1 mt-1 text-sm text-yellow-600">
+          <div className="flex items-center gap-1 text-sm text-yellow-600">
             <span aria-label="Rating" title={`Rated ${product.rating.rate} out of 5`}>
               ★
             </span>

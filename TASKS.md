@@ -49,11 +49,11 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 - [x] Create Product Listing page route and layout [UI]
 - [x] Implement product grid/list with product cards [UI]
-- [ ] Add search bar to filter products by name/keyword [UI]
+- [x] Add search bar to filter products by name/keyword [UI]
 - [x] Add category filter controls [UI]
-- [ ] Add pagination controls for product results [UI]
+- [x] Add pagination controls for product results [UI]
 - [x] Integrate product data fetching with React Query [API]
-- [ ] Connect search, filter, and pagination to product data [State] [UI]
+- [x] Connect search, filter, and pagination to product data [State] [UI]
 - [x] Make product cards clickable to navigate to details page [UI]
 
 ---
