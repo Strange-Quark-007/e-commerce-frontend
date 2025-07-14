@@ -19,11 +19,11 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## State Management and Data Fetching Setup
 
-- [ ] Create Zustand store for cart state (items, quantities, actions) [State]
-- [ ] Define TypeScript types for Product and CartItem in `src/types/` [State]
-- [ ] Set up React Query provider in app root [API] [Setup]
-- [ ] Set up Zustand provider in app root [State] [Setup]
-- [ ] Implement API client in `src/lib/` for FakeStoreAPI endpoints [API]
+- [x] Create Zustand store for cart state (items, quantities, actions) [State]
+- [x] Define TypeScript types for Product and CartItem in `src/types/` [State]
+- [x] Set up React Query provider in app root [API] [Setup]
+- [x] Set up Zustand provider in app root [State] [Setup]
+- [x] Implement API client in `src/lib/` for FakeStoreAPI endpoints [API]
 
 ---
 
