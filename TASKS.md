@@ -29,9 +29,9 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## Reusable Hooks
 
-- [ ] Create hook for fetching all products with React Query [API] [Hook]
-- [ ] Create hook for fetching product details by ID [API] [Hook]
-- [ ] Create hook for cart state and actions (add, remove, update) [State] [Hook]
+- [x] Create hook for fetching all products with React Query [API] [Hook]
+- [x] Create hook for fetching product details by ID [API] [Hook]
+- [x] Create hook for cart state and actions (add, remove, update) [State] [Hook]
 
 ---
 
