@@ -7,6 +7,7 @@ import { Menu } from 'lucide-react';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from './ui/navigation-menu';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import Container from './Container';
 
 const Logo = () => <span className="font-bold text-xl tracking-tight">ShopEasy</span>;
 
@@ -17,7 +18,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white border-b z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Container>
         <div className="flex h-16 items-center justify-between">
           {/* Logo/Brand */}
           <Link href="/" className="flex items-center gap-2">
@@ -60,7 +61,7 @@ export default function Navbar() {
             <Menu className="w-6 h-6" />
           </Button>
         </div>
-      </div>
+      </Container>
       {/* Mobile Nav Drawer */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t px-4 py-2 flex flex-col gap-4">

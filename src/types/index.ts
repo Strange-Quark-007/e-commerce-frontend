@@ -6,6 +6,10 @@ export interface Product {
   description: string;
   image: string;
   category: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 // CartItem type for local cart state

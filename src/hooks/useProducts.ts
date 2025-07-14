@@ -6,8 +6,20 @@ import type { Product } from '../types';
 
 /**
  * React Query hook to fetch all products using the useApiQuery abstraction and endpoint config.
+ * Accepts optional category. If provided, fetches products for that category.
  * Returns { data, error, isLoading, isError, refetch }
  */
-export function useProducts() {
+export function useProducts(category?: string) {
+  if (category) {
+    return useApiQuery<Product[]>(['products', category], API_ENDPOINTS.productsByCategory(category));
+  }
   return useApiQuery<Product[]>(['products'], API_ENDPOINTS.products);
+}
+
+/**
+ * React Query hook to fetch all product categories from FakeStoreAPI.
+ * Returns { data, error, isLoading, isError, refetch }
+ */
+export function useProductCategories() {
+  return useApiQuery<string[]>(['categories'], API_ENDPOINTS.categories);
 }
