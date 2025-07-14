@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+
+# GENERAL
+
+- Do not write code unless explicitly asked
+- Be clear and concise
+- Break complex tasks into subtasks with clear labels
+- Use standard formats (e.g. PRD, task list, documentation)
+- Avoid assumptions — ask for clarification if unsure
+- Follow the existing project tone and structure
+
+# CODING
+
+- Write clean, readable code
+- Prefer modular and reusable components
+- Match the project's naming and formatting conventions
