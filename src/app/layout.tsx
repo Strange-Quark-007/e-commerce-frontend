@@ -5,6 +5,8 @@ import Providers from './Providers';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Toaster } from '../components/ui/sonner';
+import { Suspense } from 'react';
+import Spinner from '@/components/Spinner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,14 +31,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <div className="flex flex-col h-screen">
-            <Navbar />
-            <main className="flex-1 pt-16 bg-background">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-        </Providers>
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center min-h-[30vh]">
+              <Spinner />
+            </div>
+          }
+        >
+          <Providers>
+            <div className="flex flex-col h-screen">
+              <Navbar />
+              <main className="flex-1 pt-16 bg-background">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );

@@ -170,7 +170,7 @@ export default function CartPage() {
     <Container>
       <div className="flex flex-col lg:flex-row gap-4 py-4 min-h-[60vh]">
         {/* Left: Cart Items List */}
-        <div className="lg:w-2/3 w-full">
+        <div className={hasItems ? 'lg:w-2/3 w-full' : 'w-full'}>
           <h2 className="text-xl font-semibold mb-4">Shopping Cart</h2>
           {!hasItems ? (
             <EmptyState

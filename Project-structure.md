@@ -33,7 +33,7 @@ This document describes the organization of the E-Commerce Frontend project, sta
       - **/[id]/** — Dynamic product details route
         - `page.tsx` — Product details page (SSR wrapper)
     - `page.tsx` — Home page (SSR wrapper)
-  - **/pages/** — Main client pages (ProductList, ProductDetails, Cart)
+  - **/views/** — Main client pages (ProductList, ProductDetails, Cart)
     - `ProductList.tsx` — Product listing page (client logic/UI)
     - `ProductDetails.tsx` — Product details page (client logic/UI)
     - `Cart.tsx` — Shopping cart page (client logic/UI)
@@ -46,7 +46,7 @@ This document describes the organization of the E-Commerce Frontend project, sta
     - `EmptyState.tsx` — Empty state UI
     - `ErrorMessage.tsx` — Error display UI
     - `Spinner.tsx` — Loading spinner
-    - **/ui/** — Shared UI primitives (button, card, dialog, badge, skeleton, navigation-menu, sonner)
+    - **/ui/** — Shared UI primitives from ShadCN (button, card, dialog, badge, skeleton, navigation-menu, sonner)
   - **/hooks/** — Custom React hooks
     - `useApi.ts` — API data fetching (React Query abstraction)
     - `useProducts.ts` — Fetch all products/categories

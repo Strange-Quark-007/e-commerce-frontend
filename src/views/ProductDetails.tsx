@@ -4,7 +4,6 @@ import { useProductById } from '../hooks/useProductById';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import Image from 'next/image';
-import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import { useParams } from 'next/navigation';
 import { useCart } from '../hooks/useCart';
