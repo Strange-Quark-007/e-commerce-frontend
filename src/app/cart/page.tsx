@@ -45,6 +45,7 @@ function CartItemRow({
               aria-label="Decrease quantity"
               onClick={() => onUpdateQuantity(Math.max(1, quantity - 1))}
               disabled={quantity <= 1}
+              className="cursor-pointer disabled:cursor-not-allowed"
             >
               -
             </Button>
@@ -55,6 +56,7 @@ function CartItemRow({
               aria-label="Increase quantity"
               onClick={() => onUpdateQuantity(Math.min(MAX_CART_ITEMS, quantity + 1))}
               disabled={quantity >= MAX_CART_ITEMS}
+              className="cursor-pointer disabled:cursor-not-allowed"
             >
               +
             </Button>
@@ -64,7 +66,13 @@ function CartItemRow({
           </span>
         </div>
         <div className="font-semibold w-16 text-right">${product.price.toFixed(2)}</div>
-        <Button size="icon" variant="ghost" aria-label="Remove from cart" onClick={onRemove}>
+        <Button
+          size="icon"
+          variant="ghost"
+          aria-label="Remove from cart"
+          onClick={onRemove}
+          className="cursor-pointer disabled:cursor-not-allowed"
+        >
           <span aria-hidden>×</span>
         </Button>
       </div>

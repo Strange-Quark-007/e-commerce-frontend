@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary group"
+      className="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary group cursor-pointer"
       aria-label={`View details for ${product.title}`}
     >
       <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-xl bg-gray-50 flex items-center justify-center">

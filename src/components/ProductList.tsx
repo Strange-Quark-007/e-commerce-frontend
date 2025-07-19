@@ -136,7 +136,7 @@ export default function ProductList() {
               />
               {search.trim() && (
                 <button
-                  className="underline text-primary text-sm"
+                  className="underline text-primary text-sm cursor-pointer disabled:cursor-not-allowed"
                   onClick={() => setSearch('')}
                   aria-label="Reset search"
                 >
@@ -157,7 +157,7 @@ export default function ProductList() {
           {totalPages > 1 && (
             <>
               <button
-                className="px-2 py-1 rounded border text-sm disabled:opacity-50"
+                className="px-2 py-1 rounded border text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
                 aria-label="Previous page"
@@ -167,16 +167,17 @@ export default function ProductList() {
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
-                  className={`px-2 py-1 rounded border text-sm ${page === i + 1 ? 'bg-primary text-white' : ''}`}
+                  className={`px-2 py-1 rounded border text-sm cursor-pointer disabled:cursor-not-allowed ${page === i + 1 ? 'bg-primary text-white' : ''}`}
                   onClick={() => setPage(i + 1)}
                   aria-current={page === i + 1 ? 'page' : undefined}
                   aria-label={`Go to page ${i + 1}`}
+                  disabled={false}
                 >
                   {i + 1}
                 </button>
               ))}
               <button
-                className="px-2 py-1 rounded border text-sm disabled:opacity-50"
+                className="px-2 py-1 rounded border text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 aria-label="Next page"

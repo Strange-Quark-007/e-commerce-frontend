@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCart } from '../hooks/useCart';
 import { useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, ShoppingCart } from 'lucide-react';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from './ui/navigation-menu';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -28,19 +28,16 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link href="/">
-                  <NavigationMenuLink asChild>
-                    <span className="cursor-pointer">Products</span>
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+              {/* Removed Products link */}
               <NavigationMenuItem>
                 <Link href="/cart">
                   <NavigationMenuLink asChild>
-                    <span className="flex items-center gap-1 cursor-pointer">
-                      Cart
-                      <Badge className="ml-1" variant="default">
+                    <span className="relative flex items-center gap-1">
+                      <ShoppingCart className="w-6 h-6" aria-label="Cart" />
+                      <Badge
+                        className="absolute -top-2 -right-3 px-1.5 py-0.5 text-[10px] min-w-[18px] h-[18px] flex items-center justify-center"
+                        variant="default"
+                      >
                         {cartCount}
                       </Badge>
                     </span>
@@ -65,18 +62,21 @@ export default function Navbar() {
       {/* Mobile Nav Drawer */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t px-4 py-2 flex flex-col gap-4">
-          <Link href="/" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>
-            Products
-          </Link>
+          {/* Removed Products link */}
           <Link
             href="/cart"
             className="relative flex items-center hover:text-primary transition-colors"
             onClick={() => setMobileOpen(false)}
           >
-            <span>Cart</span>
-            <Badge className="ml-1" variant="default">
-              {cartCount}
-            </Badge>
+            <span className="relative flex items-center">
+              <ShoppingCart className="w-6 h-6" aria-label="Cart" />
+              <Badge
+                className="absolute -top-2 -right-3 px-1.5 py-0.5 text-[10px] min-w-[18px] h-[18px] flex items-center justify-center"
+                variant="default"
+              >
+                {cartCount}
+              </Badge>
+            </span>
           </Link>
         </div>
       )}
