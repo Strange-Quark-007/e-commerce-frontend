@@ -12,8 +12,8 @@ const Logo = () => <span className="font-bold text-xl tracking-tight">{APP_NAME}
 
 export default function Navbar() {
   const { items } = useCart();
-  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const { theme, setTheme } = useTheme();
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };

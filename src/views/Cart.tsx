@@ -21,8 +21,9 @@ import {
   DialogTrigger,
   DialogClose,
 } from '../components/ui/dialog';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import type { Product } from '../types';
+import { useMediaQuery } from 'react-responsive';
 interface CartItemRowProps {
   product: Product;
   quantity: number;
@@ -44,7 +45,10 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
       <div className="flex flex-col md:flex-row flex-1 min-w-0 gap-3 md:gap-4">
         {/* Left: image, name, category */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <span className="font-semibold text-base text-card-foreground truncate block mb-1" title={product.title}>
+          <span
+            className="font-semibold text-base text-card-foreground max-w-80 truncate block mb-1"
+            title={product.title}
+          >
             {product.title}
           </span>
           <CategoryBadge category={product.category} className="mb-2" />
@@ -66,7 +70,7 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
               {quantity}
               {/* (max) message below quantity, absolute for all screens */}
               <span
-                className="absolute left-1/2 -translate-x-1/2 top-full mt-0.5 block text-xs text-red-400 min-h-[1em]"
+                className="absolute left-1/2 -translate-x-1/2 top-full block text-xs text-red-400 min-h-[1em]"
                 style={{ height: '1em' }}
               >
                 {quantity >= MAX_CART_ITEMS ? '(max)' : '\u00A0'}
@@ -133,7 +137,7 @@ function OrderSummaryRow({ product, quantity }: { product: Product; quantity: nu
         <span className="truncate block max-w-[140px]" title={product.title}>
           {product.title}
         </span>
-        <span className="font-bold ml-1 whitespace-nowrap">x{quantity}</span>
+        <span className="font-bold pl-2 whitespace-nowrap">x{quantity}</span>
       </span>
       <span>{`$${(product.price * quantity).toFixed(2)}`}</span>
     </div>
@@ -141,9 +145,33 @@ function OrderSummaryRow({ product, quantity }: { product: Product; quantity: nu
 }
 
 export default function CartPage() {
-  const { items, removeFromCart, updateQuantity } = useCart();
+  // Responsive pagination: 2 for mobile, 4 for desktop
+  const isDesktop = useMediaQuery({ minWidth: 768 });
+  const { items, removeFromCart, updateQuantity, clearCart } = useCart();
   const hasItems = items.length > 0;
   const { data: products, isLoading, isError } = useProducts();
+  const ITEMS_PER_PAGE = isDesktop ? 4 : 2;
+  const [page, setPage] = React.useState(1);
+  const [clearDialogOpen, setClearDialogOpen] = React.useState(false);
+
+  const cartItemsWithProduct = items
+    .map((item) => ({
+      ...item,
+      product: products?.find((p) => p.id === item.productId),
+    }))
+    .filter((item) => !!item.product)
+    .map((item) => ({ ...item, product: item.product as NonNullable<typeof item.product> }));
+
+  const total = cartItemsWithProduct.reduce((sum, { product, quantity }) => sum + product.price * quantity, 0);
+
+  // Pagination logic
+  const totalPages = Math.ceil(cartItemsWithProduct.length / ITEMS_PER_PAGE) || 1;
+  const paginatedItems = cartItemsWithProduct.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  // Reset to page 1 if cart size shrinks below current page
+  React.useEffect(() => {
+    if (page > totalPages) setPage(1);
+  }, [cartItemsWithProduct.length, totalPages, page]);
 
   if (isLoading) {
     return (
@@ -156,22 +184,49 @@ export default function CartPage() {
     return <EmptyState message="Failed to load products." />;
   }
 
-  const cartItemsWithProduct = items
-    .map((item) => ({
-      ...item,
-      product: products.find((p) => p.id === item.productId),
-    }))
-    .filter((item) => !!item.product)
-    .map((item) => ({ ...item, product: item.product as NonNullable<typeof item.product> }));
-
-  const total = cartItemsWithProduct.reduce((sum, { product, quantity }) => sum + product.price * quantity, 0);
-
   return (
     <Container>
       <div className="flex flex-col lg:flex-row gap-4 py-4 min-h-[60vh]">
         {/* Left: Cart Items List */}
         <div className={hasItems ? 'lg:w-2/3 w-full' : 'w-full'}>
-          <h2 className="text-xl font-semibold mb-4">Shopping Cart</h2>
+          <div className="flex items-center align-middle justify-between mb-4">
+            <h2 className="text-xl font-semibold">Shopping Cart</h2>
+            {hasItems && (
+              <Dialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setClearDialogOpen(true)}
+                    className="ml-auto flex items-center gap-1 text-destructive hover:bg-destructive/10"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Clear Cart
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Clear cart?</DialogTitle>
+                    <DialogDescription>Are you sure you want to remove all items from your cart?</DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        clearCart();
+                        setClearDialogOpen(false);
+                      }}
+                    >
+                      Clear Cart
+                    </Button>
+                    <DialogClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
           {!hasItems ? (
             <EmptyState
               message="Your cart is empty."
@@ -179,22 +234,60 @@ export default function CartPage() {
               onAction={() => (window.location.href = '/')}
             />
           ) : (
-            <div className="space-y-4 overflow-y-auto" style={{ maxHeight: '520px' }}>
-              {cartItemsWithProduct.map((item) => (
-                <CartItemRow
-                  key={item.productId}
-                  product={item.product}
-                  quantity={item.quantity}
-                  onRemove={() => removeFromCart(item.productId)}
-                  onUpdateQuantity={(qty) => updateQuantity(item.productId, qty)}
-                />
-              ))}
-            </div>
+            <>
+              {/* Fixed-height scrollable list */}
+              <div className="space-y-4 overflow-y-auto h-[525px]">
+                {paginatedItems.map((item) => (
+                  <CartItemRow
+                    key={item.productId}
+                    product={item.product}
+                    quantity={item.quantity}
+                    onRemove={() => removeFromCart(item.productId)}
+                    onUpdateQuantity={(qty) => updateQuantity(item.productId, qty)}
+                  />
+                ))}
+              </div>
+              {/* Pagination controls below the list */}
+              <div className="flex justify-center items-center gap-2 mt-4 min-h-[40px]">
+                {totalPages > 1 && (
+                  <>
+                    <button
+                      className="px-2 py-1 rounded border border-border bg-background text-foreground text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      aria-label="Previous page"
+                    >
+                      Prev
+                    </button>
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <button
+                        key={i}
+                        className={`px-2 py-1 rounded border border-border text-sm cursor-pointer disabled:cursor-not-allowed bg-background text-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary ${page === i + 1 ? 'bg-primary text-primary-foreground' : ''}`}
+                        onClick={() => setPage(i + 1)}
+                        aria-current={page === i + 1 ? 'page' : undefined}
+                        aria-label={`Go to page ${i + 1}`}
+                        disabled={false}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button
+                      className="px-2 py-1 rounded border border-border bg-background text-foreground text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={page === totalPages}
+                      aria-label="Next page"
+                    >
+                      Next
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
           )}
         </div>
         {/* Right: Order Summary */}
         {hasItems && (
-          <div className="lg:w-1/3 w-full">
+          <div className="lg:w-1/3 w-full lg:max-w-[400px]">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
             <Card className="p-4 flex flex-col gap-4">
               <div className="flex flex-col gap-2">
