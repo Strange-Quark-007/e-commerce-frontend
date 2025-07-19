@@ -1,6 +1,6 @@
 export interface Product {
   id: number;
-  title: string; // FakeStoreAPI uses 'title' instead of 'name'
+  title: string;
   price: number;
   description: string;
   image: string;
@@ -11,7 +11,6 @@ export interface Product {
   };
 }
 
-// CartItem type for local cart state
 export interface CartItem {
   productId: number;
   quantity: number;

@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useCart } from '../hooks/useCart';
 import { ShoppingCart, Sun, Moon } from 'lucide-react';
-import { Badge } from './ui/badge';
-import Container from './Container';
 import { useTheme } from 'next-themes';
-import { APP_NAME } from '../lib/constants';
+
+import { useCart } from '@/hooks/useCart';
+import { Badge } from '@/components/ui/badge';
+import Container from '@/components/Container';
+import { APP_NAME } from '@/lib/constants';
 
 const Logo = () => <span className="font-bold text-xl tracking-tight">{APP_NAME}</span>;
 
@@ -22,11 +23,9 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 w-full bg-background border-b z-50 text-foreground">
       <Container>
         <div className="flex h-16 items-center justify-between w-full">
-          {/* Logo/Brand */}
           <Link href="/" className="flex items-center gap-2">
             <Logo />
           </Link>
-          {/* Cart Icon and Theme Toggle */}
           <div className="flex items-center gap-4">
             <Link href="/cart" className="relative flex items-center hover:text-primary transition-colors">
               <span className="relative flex items-center">
@@ -39,7 +38,6 @@ export default function Navbar() {
                 </Badge>
               </span>
             </Link>
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
@@ -51,7 +49,6 @@ export default function Navbar() {
           </div>
         </div>
       </Container>
-      {/* Remove hamburger and mobile nav drawer */}
     </nav>
   );
 }

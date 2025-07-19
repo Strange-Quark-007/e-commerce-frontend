@@ -1,2 +1,12 @@
-export const MAX_CART_ITEMS = 10;
 export const APP_NAME = 'QuickCart';
+export const MAX_QUANTITY_PER_ITEM = 10;
+export const MIN_QUANTITY_PER_ITEM = 1;
+export const DEFAULT_PAGE = 1;
+export const PAGE_SIZE_DESKTOP = 8;
+export const PAGE_SIZE_TABLET = 9;
+export const PAGE_SIZE_LG_TABLET = 8;
+export const PAGE_SIZE_MOBILE = 4;
+export const SKELETON_CARD_COUNT = 8;
+export const BREAKPOINT_XL = 1280;
+export const BREAKPOINT_LG = 1024;
+export const BREAKPOINT_MD = 768;

@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CartItem } from '../types';
-import { MAX_CART_ITEMS } from '../lib/constants';
+
+import type { CartItem } from '@/types';
+import { MAX_QUANTITY_PER_ITEM, MIN_QUANTITY_PER_ITEM } from '@/lib/constants';
 
 interface CartState {
   items: CartItem[];
@@ -11,28 +12,16 @@ interface CartState {
   clearCart: () => void;
 }
 
-/**
- * Zustand store for managing shopping cart state.
- * - Persists cart items in localStorage.
- * - Provides actions to add, remove, update, and clear cart items.
- * - Enforces a maximum quantity per item.
- */
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      /**
-       * Add a product to the cart or update its quantity.
-       * Returns false if max quantity exceeded, true otherwise.
-       * @param productId - Product ID to add
-       * @param quantity - Quantity to add (default 1)
-       */
-      addToCart: (productId, quantity = 1) => {
+      addToCart: (productId, quantity = MIN_QUANTITY_PER_ITEM) => {
         const state = get();
         const existing = state.items.find((item) => item.productId === productId);
         if (existing) {
           const newQty = existing.quantity + quantity;
-          if (newQty > MAX_CART_ITEMS) {
+          if (newQty > MAX_QUANTITY_PER_ITEM) {
             return false;
           }
           set({
@@ -40,7 +29,7 @@ export const useCartStore = create<CartState>()(
           });
           return true;
         }
-        if (quantity > MAX_CART_ITEMS) {
+        if (quantity > MAX_QUANTITY_PER_ITEM) {
           return false;
         }
         set({
@@ -48,26 +37,14 @@ export const useCartStore = create<CartState>()(
         });
         return true;
       },
-      /**
-       * Remove a product from the cart by its ID.
-       * @param productId - Product ID to remove
-       */
       removeFromCart: (productId) =>
         set((state) => ({
           items: state.items.filter((item) => item.productId !== productId),
         })),
-      /**
-       * Update the quantity of a product in the cart.
-       * @param productId - Product ID to update
-       * @param quantity - New quantity
-       */
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           items: state.items.map((item) => (item.productId === productId ? { ...item, quantity } : item)),
         })),
-      /**
-       * Clear all items from the cart.
-       */
       clearCart: () => set({ items: [] }),
     }),
     {

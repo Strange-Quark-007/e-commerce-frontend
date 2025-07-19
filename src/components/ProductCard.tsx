@@ -1,11 +1,10 @@
 import Link from 'next/link';
-import type { Product } from '../types';
 import Image from 'next/image';
-import { Card } from './ui/card';
 
-function toTitleCase(str: string) {
-  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
-}
+import type { Product } from '@/types';
+import { Card } from '@/components/ui/card';
+import { toTitleCase } from '@/lib/utils';
+import CategoryBadge from './CategoryBadge';
 
 interface ProductCardProps {
   product: Product;
@@ -29,20 +28,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             loading="lazy"
           />
         </div>
-        {/* Divider below image */}
         <div className="border-b border-border" />
         <div className="p-3 flex flex-col gap-1">
           <h2 className="text-base font-semibold text-card-foreground truncate" title={product.title}>
             {product.title}
           </h2>
-          <div>
-            <span
-              className="inline-block px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground"
-              title={toTitleCase(product.category)}
-            >
-              {toTitleCase(product.category)}
-            </span>
-          </div>
+          <CategoryBadge category={product.category} />
           <div className="text-lg font-bold text-primary">${product.price.toFixed(2)}</div>
           {product.rating && (
             <div className="flex items-center gap-1 text-sm text-yellow-600">

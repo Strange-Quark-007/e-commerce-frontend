@@ -1,18 +1,31 @@
 'use client';
 
-import { useProducts, useProductCategories } from '../hooks/useProducts';
-import type { Product } from '../types';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useMemo, useEffect } from 'react';
-import ErrorMessage from '../components/ErrorMessage';
-import EmptyState, { DefaultEmptyIcon } from '../components/EmptyState';
-import ProductCard from '../components/ProductCard';
-import { Skeleton } from '../components/ui/skeleton';
-import Container from '../components/Container';
-import { Search, Filter, X } from 'lucide-react';
-import { toTitleCase } from '../lib/utils';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useMediaQuery } from 'react-responsive';
-import { Card } from '../components/ui/card';
+import { Search, Filter, X, ChevronDown } from 'lucide-react';
+
+import { useProducts, useProductCategories } from '@/hooks/useProducts';
+import type { Product } from '@/types';
+import ErrorMessage from '@/components/ErrorMessage';
+import EmptyState, { DefaultEmptyIcon } from '@/components/EmptyState';
+import ProductCard from '@/components/ProductCard';
+import { Skeleton } from '@/components/ui/skeleton';
+import Container from '@/components/Container';
+import { toTitleCase } from '@/lib/utils';
+import { Card } from '@/components/ui/card';
+import {
+  APP_NAME,
+  DEFAULT_PAGE,
+  PAGE_SIZE_DESKTOP,
+  PAGE_SIZE_TABLET,
+  PAGE_SIZE_LG_TABLET,
+  PAGE_SIZE_MOBILE,
+  SKELETON_CARD_COUNT,
+  BREAKPOINT_XL,
+  BREAKPOINT_LG,
+  BREAKPOINT_MD,
+} from '@/lib/constants';
 
 export default function ProductListPage() {
   const router = useRouter();
@@ -21,18 +34,15 @@ export default function ProductListPage() {
   const { data: products, isLoading, isError, error, refetch } = useProducts(categoryParam || undefined);
   const { data: categories, isLoading: isCategoriesLoading } = useProductCategories();
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const isXL = useMediaQuery({ minWidth: 1280 }); // desktop
-  const isLG = useMediaQuery({ minWidth: 1024, maxWidth: 1279 }); // large tablet
-  const isMD = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // tablet
-  let PAGE_SIZE = 8;
-  if (isXL)
-    PAGE_SIZE = 8; // 2x4
-  else if (isMD)
-    PAGE_SIZE = 9; // 3x3
-  else if (isLG)
-    PAGE_SIZE = 8; // 4x2
-  else PAGE_SIZE = 4; // mobile fallback
+  const [page, setPage] = useState(DEFAULT_PAGE);
+  const isXL = useMediaQuery({ minWidth: BREAKPOINT_XL });
+  const isLG = useMediaQuery({ minWidth: BREAKPOINT_LG, maxWidth: BREAKPOINT_XL - 1 });
+  const isMD = useMediaQuery({ minWidth: BREAKPOINT_MD, maxWidth: BREAKPOINT_LG - 1 });
+  let PAGE_SIZE = PAGE_SIZE_DESKTOP;
+  if (isXL) PAGE_SIZE = PAGE_SIZE_DESKTOP;
+  else if (isMD) PAGE_SIZE = PAGE_SIZE_TABLET;
+  else if (isLG) PAGE_SIZE = PAGE_SIZE_LG_TABLET;
+  else PAGE_SIZE = PAGE_SIZE_MOBILE;
 
   const filteredProducts = useMemo<Product[]>(() => {
     if (!products) return [] as Product[];
@@ -49,25 +59,23 @@ export default function ProductListPage() {
     setPage(1);
   }, [search, categoryParam]);
 
-  // If the categoryParam is invalid, reset it to All Categories
   useEffect(() => {
     if (categories && categoryParam && !categories.includes(categoryParam)) {
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(Array.from(searchParams?.entries() || []));
       params.delete('category');
-      router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+      router.replace(`?${params.toString()}`, { scroll: false });
     }
-    // Only run when categories or categoryParam changes
-  }, [categories, categoryParam, router]);
+  }, [categories, categoryParam, router, searchParams]);
 
   function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(Array.from(searchParams?.entries() || []));
     if (value) {
       params.set('category', value);
     } else {
       params.delete('category');
     }
-    router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+    router.push(`?${params.toString()}`, { scroll: false });
   }
 
   if (isError) {
@@ -82,21 +90,27 @@ export default function ProductListPage() {
           <label htmlFor="category" className="text-sm font-medium text-foreground">
             Category:
           </label>
-          <select
-            id="category"
-            className="block w-48 px-3 py-2 border border-border rounded-md bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            value={categoryParam}
-            onChange={handleCategoryChange}
-            disabled={isCategoriesLoading || isLoading}
-            aria-label="Filter by category"
-          >
-            <option value="">All Categories</option>
-            {categories?.map((cat) => (
-              <option key={cat} value={cat}>
-                {toTitleCase(cat)}
-              </option>
-            ))}
-          </select>
+          <div className="relative w-48">
+            <select
+              id="category"
+              className="block w-full px-3 py-2 border border-border rounded-md bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary appearance-none pr-10"
+              value={categoryParam}
+              onChange={handleCategoryChange}
+              disabled={isCategoriesLoading || isLoading}
+              aria-label="Filter by category"
+            >
+              <option value="">All Categories</option>
+              {categories?.map((cat) => (
+                <option key={cat} value={cat}>
+                  {toTitleCase(cat)}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground"
+              aria-hidden="true"
+            />
+          </div>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
           <div className="relative w-full sm:w-72">
@@ -130,7 +144,7 @@ export default function ProductListPage() {
         <div className="flex-1">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {Array.from({ length: 8 }).map((_, i) => (
+              {Array.from({ length: SKELETON_CARD_COUNT }).map((_, i) => (
                 <Card key={i} className="p-0 gap-0">
                   <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-xl bg-muted flex items-center justify-center">
                     <Skeleton className="w-full h-48 bg-muted" />

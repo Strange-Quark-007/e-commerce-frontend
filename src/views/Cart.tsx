@@ -2,15 +2,18 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useCart } from '../hooks/useCart';
-import { useProducts } from '../hooks/useProducts';
-import { Card } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import Spinner from '../components/Spinner';
-import EmptyState from '../components/EmptyState';
-import Container from '../components/Container';
-import { MAX_CART_ITEMS } from '../lib/constants';
-import CategoryBadge from '../components/CategoryBadge';
+import { useMediaQuery } from 'react-responsive';
+import { Minus, Plus, Trash2 } from 'lucide-react';
+
+import { useCart } from '@/hooks/useCart';
+import { useProducts } from '@/hooks/useProducts';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Spinner from '@/components/Spinner';
+import EmptyState from '@/components/EmptyState';
+import Container from '@/components/Container';
+import { MAX_QUANTITY_PER_ITEM, MIN_QUANTITY_PER_ITEM } from '@/lib/constants';
+import CategoryBadge from '@/components/CategoryBadge';
 import {
   Dialog,
   DialogContent,
@@ -20,10 +23,9 @@ import {
   DialogFooter,
   DialogTrigger,
   DialogClose,
-} from '../components/ui/dialog';
-import { Minus, Plus, Trash2 } from 'lucide-react';
-import type { Product } from '../types';
-import { useMediaQuery } from 'react-responsive';
+} from '@/components/ui/dialog';
+import type { Product } from '@/types';
+
 interface CartItemRowProps {
   product: Product;
   quantity: number;
@@ -43,7 +45,6 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
         loading="lazy"
       />
       <div className="flex flex-col md:flex-row flex-1 min-w-0 gap-3 md:gap-4">
-        {/* Left: image, name, category */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <span
             className="font-semibold text-base text-card-foreground max-w-80 truncate block mb-1"
@@ -53,7 +54,6 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
           </span>
           <CategoryBadge category={product.category} className="mb-2" />
         </div>
-        {/* Right: counter and price */}
         <div className="flex flex-row items-center justify-between gap-2 w-full md:w-auto md:justify-end md:gap-4 md:text-right">
           <div className="flex items-center gap-2 justify-end relative">
             <Button
@@ -73,15 +73,15 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
                 className="absolute left-1/2 -translate-x-1/2 top-full block text-xs text-red-400 min-h-[1em]"
                 style={{ height: '1em' }}
               >
-                {quantity >= MAX_CART_ITEMS ? '(max)' : '\u00A0'}
+                {quantity >= MAX_QUANTITY_PER_ITEM ? '(max)' : '\u00A0'}
               </span>
             </span>
             <Button
               size="icon"
               variant="ghost"
               aria-label="Increase quantity"
-              onClick={() => onUpdateQuantity(Math.min(MAX_CART_ITEMS, quantity + 1))}
-              disabled={quantity >= MAX_CART_ITEMS}
+              onClick={() => onUpdateQuantity(Math.min(MAX_QUANTITY_PER_ITEM, quantity + 1))}
+              disabled={quantity >= MAX_QUANTITY_PER_ITEM}
               className="cursor-pointer disabled:cursor-not-allowed h-8 w-8"
             >
               <Plus className="w-4 h-4" />

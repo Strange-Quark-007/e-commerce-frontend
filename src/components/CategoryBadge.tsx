@@ -1,7 +1,8 @@
-import { useRouter } from 'next/navigation';
-import { Badge } from './ui/badge';
-import { toTitleCase } from '../lib/utils';
 import React from 'react';
+import { useRouter } from 'next/navigation';
+
+import { Badge } from '@/components/ui/badge';
+import { toTitleCase } from '@/lib/utils';
 
 interface CategoryBadgeProps {
   category: string;

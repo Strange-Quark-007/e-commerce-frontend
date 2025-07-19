@@ -10,7 +10,6 @@ import { Product } from '@/types';
  * Returns { data, error, isLoading, isError, refetch }
  */
 export function useProducts(category?: string) {
-  // Always call the hook at the top level
   return useApiQuery<Product[]>(
     category ? ['products', category] : ['products'],
     category ? API_ENDPOINTS.productsByCategory(category) : API_ENDPOINTS.products,
