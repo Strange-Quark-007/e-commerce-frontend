@@ -11,7 +11,7 @@ This document describes the organization of the E-Commerce Frontend project, sta
 - [TECH-SPEC.md](TECH-SPEC.md) — Technical specification
 - [UX-GUIDELINES.md](UX-GUIDELINES.md) — UX and UI guidelines
 - [TASKS.md](TASKS.md) — Implementation checklist and progress tracking
-- [Project-structure.md](Project-structure.md) — This file; explains the project structure
+- [Project-structure.md](Project-structure.md) — Project structure
 - [README.md](README.md) — Project overview and setup instructions
 
 - **/src/** — Main source code

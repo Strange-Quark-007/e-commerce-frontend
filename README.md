@@ -32,3 +32,12 @@ This project is a modern e-commerce frontend built with Next.js, TypeScript, Tai
 - [React Query](https://tanstack.com/query/latest)
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
+
+### Documentation
+
+- [problem-statement.md](problem-statement.md) — Project problem statement
+- [PRD.md](PRD.md) — Product requirements document
+- [TECH-SPEC.md](TECH-SPEC.md) — Technical specification
+- [UX-GUIDELINES.md](UX-GUIDELINES.md) — UX and UI guidelines
+- [TASKS.md](TASKS.md) — Implementation checklist and progress tracking
+- [Project-structure.md](Project-structure.md) — Project structure
