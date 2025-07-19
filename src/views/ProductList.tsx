@@ -48,6 +48,16 @@ export default function ProductListPage() {
     setPage(1);
   }, [search, categoryParam]);
 
+  // If the categoryParam is invalid, reset it to All Categories
+  useEffect(() => {
+    if (categories && categoryParam && !categories.includes(categoryParam)) {
+      const params = new URLSearchParams(window.location.search);
+      params.delete('category');
+      router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+    }
+    // Only run when categories or categoryParam changes
+  }, [categories, categoryParam, router]);
+
   function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
     const params = new URLSearchParams(window.location.search);
