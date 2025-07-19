@@ -8,7 +8,6 @@ import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import Spinner from '../components/Spinner';
 import EmptyState from '../components/EmptyState';
-import { toTitleCase } from '../lib/utils';
 import Container from '../components/Container';
 import { MAX_CART_ITEMS } from '../lib/constants';
 import CategoryBadge from '../components/CategoryBadge';
@@ -45,7 +44,7 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
       <div className="flex flex-col md:flex-row flex-1 min-w-0 gap-3 md:gap-4">
         {/* Left: image, name, category */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <span className="font-semibold text-base text-gray-900 truncate block mb-1" title={product.title}>
+          <span className="font-semibold text-base text-card-foreground truncate block mb-1" title={product.title}>
             {product.title}
           </span>
           <CategoryBadge category={product.category} className="mb-2" />

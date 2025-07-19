@@ -12,6 +12,7 @@ import Container from '../components/Container';
 import { Search, Filter, X } from 'lucide-react';
 import { toTitleCase } from '../lib/utils';
 import { useMediaQuery } from 'react-responsive';
+import { Card } from '../components/ui/card';
 
 export default function ProductListPage() {
   const router = useRouter();
@@ -78,12 +79,12 @@ export default function ProductListPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 gap-y-3 py-2 pb-4">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500" aria-hidden="true" />
-          <label htmlFor="category" className="text-sm font-medium text-gray-700">
+          <label htmlFor="category" className="text-sm font-medium text-foreground">
             Category:
           </label>
           <select
             id="category"
-            className="block w-48 px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="block w-48 px-3 py-2 border border-border rounded-md bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             value={categoryParam}
             onChange={handleCategoryChange}
             disabled={isCategoriesLoading || isLoading}
@@ -105,7 +106,7 @@ export default function ProductListPage() {
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full pl-10 pr-8 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-8 py-2 border border-border rounded-md text-sm text-foreground bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Search products"
@@ -114,7 +115,7 @@ export default function ProductListPage() {
             {search.trim() && (
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground focus:outline-none"
                 onClick={() => setSearch('')}
                 aria-label="Clear search"
                 tabIndex={0}
@@ -130,15 +131,18 @@ export default function ProductListPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="bg-white border border-gray-200 rounded-xl shadow-sm">
-                  <Skeleton className="aspect-w-1 aspect-h-1 w-full h-36 rounded-t-xl bg-gray-100" />
-                  <div className="p-3 flex flex-col gap-1">
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-3 w-1/3" />
-                    <Skeleton className="h-5 w-1/4" />
-                    <Skeleton className="h-3 w-1/2" />
+                <Card key={i} className="p-0 gap-0">
+                  <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-xl bg-muted flex items-center justify-center">
+                    <Skeleton className="w-full h-48 bg-muted" />
                   </div>
-                </div>
+                  <div className="border-b border-border" />
+                  <div className="p-3 flex flex-col gap-2">
+                    <Skeleton className="h-5 w-3/4 bg-muted" />
+                    <Skeleton className="h-5 w-1/4 bg-muted" />
+                    <Skeleton className="h-3 w-1/3 bg-muted" />
+                    <Skeleton className="h-3 w-1/2 bg-muted" />
+                  </div>
+                </Card>
               ))}
             </div>
           ) : !products || filteredProducts.length === 0 ? (
@@ -169,7 +173,7 @@ export default function ProductListPage() {
           {totalPages > 1 && (
             <>
               <button
-                className="px-2 py-1 rounded border text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                className="px-2 py-1 rounded border border-border bg-background text-foreground text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
                 aria-label="Previous page"
@@ -179,7 +183,7 @@ export default function ProductListPage() {
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
-                  className={`px-2 py-1 rounded border text-sm cursor-pointer disabled:cursor-not-allowed ${page === i + 1 ? 'bg-primary text-white' : ''}`}
+                  className={`px-2 py-1 rounded border border-border text-sm cursor-pointer disabled:cursor-not-allowed bg-background text-foreground hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary ${page === i + 1 ? 'bg-primary text-primary-foreground' : ''}`}
                   onClick={() => setPage(i + 1)}
                   aria-current={page === i + 1 ? 'page' : undefined}
                   aria-label={`Go to page ${i + 1}`}
@@ -189,7 +193,7 @@ export default function ProductListPage() {
                 </button>
               ))}
               <button
-                className="px-2 py-1 rounded border text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                className="px-2 py-1 rounded border border-border bg-background text-foreground text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 aria-label="Next page"

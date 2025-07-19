@@ -1,7 +1,6 @@
 'use client';
 
 import { useProductById } from '../hooks/useProductById';
-import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import Image from 'next/image';
 import ErrorMessage from '../components/ErrorMessage';
@@ -12,6 +11,48 @@ import { toast } from 'sonner';
 import { Skeleton } from '../components/ui/skeleton';
 import { MAX_CART_ITEMS } from '../lib/constants';
 import CategoryBadge from '../components/CategoryBadge';
+import { Minus, Plus } from 'lucide-react';
+import { Card } from '../components/ui/card';
+
+function Counter({
+  value,
+  onDecrement,
+  onIncrement,
+  min = 1,
+  max = 10,
+  disabled,
+}: {
+  value: number;
+  onDecrement: () => void;
+  onIncrement: () => void;
+  min?: number;
+  max?: number;
+  disabled?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2 mb-2">
+      <Button
+        size="icon"
+        variant="ghost"
+        onClick={onDecrement}
+        aria-label="Decrease quantity"
+        disabled={value === min || disabled}
+      >
+        <Minus className="w-4 h-4" />
+      </Button>
+      <span className="w-8 text-center select-none text-card-foreground">{value}</span>
+      <Button
+        size="icon"
+        variant="ghost"
+        onClick={onIncrement}
+        aria-label="Increase quantity"
+        disabled={value === max || disabled}
+      >
+        <Plus className="w-4 h-4" />
+      </Button>
+    </div>
+  );
+}
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -44,27 +85,27 @@ export default function ProductDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center bg-gray-50">
-        <div className="max-w-4xl w-full py-10 px-4 flex flex-col md:flex-row gap-8">
+      <div className="h-full flex items-center justify-center bg-background">
+        <Card className="max-w-4xl w-full py-10 px-4 flex flex-col md:flex-row gap-8">
           {/* Left: Image Skeleton */}
           <div className="flex-shrink-0 w-full md:w-1/2 flex items-center justify-center">
-            <Skeleton className="w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-lg bg-gray-200" />
+            <Skeleton className="w-[320px] h-[360px] md:w-[400px] md:h-[440px] rounded-lg bg-muted" />
           </div>
           {/* Right: Details Skeleton */}
-          <div className="flex-1 flex flex-col gap-4">
-            <Skeleton className="h-10 w-3/4 mb-2" /> {/* Title */}
-            <Skeleton className="h-6 w-32 mb-2" /> {/* Category badge */}
-            <Skeleton className="h-7 w-24 mb-2" /> {/* Price */}
-            <Skeleton className="h-5 w-20 mb-2" /> {/* Rating */}
-            <Skeleton className="h-16 w-full mb-4" /> {/* Description */}
+          <div className="flex-1 flex flex-col gap-5">
+            <Skeleton className="h-12 w-3/4 mb-2 bg-muted" /> {/* Title */}
+            <Skeleton className="h-7 w-32 mb-2 bg-muted" /> {/* Category badge */}
+            <Skeleton className="h-8 w-24 mb-2 bg-muted" /> {/* Price */}
+            <Skeleton className="h-6 w-20 mb-2 bg-muted" /> {/* Rating */}
+            <Skeleton className="h-20 w-full mb-4 bg-muted" /> {/* Description */}
             <div className="flex items-center gap-2 mb-2">
-              <Skeleton className="h-10 w-10 rounded-md" />
-              <Skeleton className="h-8 w-8" />
-              <Skeleton className="h-10 w-10 rounded-md" />
+              <Skeleton className="h-12 w-12 rounded-md bg-muted" />
+              <Skeleton className="h-10 w-10 bg-muted" />
+              <Skeleton className="h-12 w-12 rounded-md bg-muted" />
             </div>
-            <Skeleton className="h-12 w-40 rounded-md" /> {/* Add to Cart button */}
+            <Skeleton className="h-14 w-44 rounded-md bg-muted" /> {/* Add to Cart button */}
           </div>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -82,13 +123,13 @@ export default function ProductDetailsPage() {
       <div className="max-w-4xl w-full py-10 px-4 flex flex-col md:flex-row gap-8">
         {/* Left: Large Image */}
         <div className="flex-shrink-0 w-full md:w-1/2 flex items-center justify-center">
-          <div className="transition-transform duration-200 ease-in-out rounded-lg hover:shadow-lg bg-white hover:scale-105">
+          <div className="transition-transform duration-200 ease-in-out rounded-lg hover:shadow-lg bg-muted dark:bg-zinc-800 hover:scale-105 dark:filter dark:invert">
             <Image
               src={product.image}
               alt={product.title}
               width={400}
               height={400}
-              className="rounded-lg object-contain bg-white"
+              className="rounded-lg object-contain bg-transparent mix-blend-multiply dark:mix-blend-screen dark:filter dark:invert"
               priority
             />
           </div>
@@ -112,27 +153,7 @@ export default function ProductDetailsPage() {
           )}
           <p className="text-muted-foreground mb-4">{product.description}</p>
           {/* Quantity selector */}
-          <div className="flex items-center gap-2 mb-2">
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={handleDecrement}
-              aria-label="Decrease quantity"
-              disabled={quantity === 1}
-            >
-              -
-            </Button>
-            <span className="w-8 text-center select-none">{quantity}</span>
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={handleIncrement}
-              aria-label="Increase quantity"
-              disabled={quantity === 10}
-            >
-              +
-            </Button>
-          </div>
+          <Counter value={quantity} onDecrement={handleDecrement} onIncrement={handleIncrement} min={1} max={10} />
           <Button size="lg" className="w-full md:w-fit" onClick={handleAddToCart} disabled={quantity < 1}>
             Add to Cart
           </Button>

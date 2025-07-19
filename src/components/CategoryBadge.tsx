@@ -22,9 +22,6 @@ export default function CategoryBadge({ category, className }: CategoryBadgeProp
       role="button"
       aria-label={`View products in ${toTitleCase(category)}`}
       onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') handleClick(e as any);
-      }}
     >
       {toTitleCase(category)}
     </Badge>
