@@ -1,10 +1,5 @@
 import { useCartStore } from '../store/cartStore';
-import type { CartItem } from '../types';
 
-/**
- * Hook to access cart state and actions from Zustand store.
- * Returns { items, addToCart, removeFromCart, updateQuantity, clearCart }
- */
 export function useCart() {
   const items = useCartStore((state) => state.items);
   const addToCart = useCartStore((state) => state.addToCart);

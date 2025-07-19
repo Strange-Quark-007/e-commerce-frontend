@@ -1,10 +1,7 @@
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions, QueryKey } from '@tanstack/react-query';
 import { BASE_URL } from '../lib/endpoints';
 
-/**
- * Centralized fetch utility with error handling and method support.
- */
-async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: string }): Promise<T> {
+async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: string }): Promise<T | null> {
   const { method = 'GET', ...rest } = options || {};
   const res = await fetch(`${BASE_URL}${endpoint}`, { method, ...rest });
   if (!res.ok) {
@@ -15,7 +12,12 @@ async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: s
     } catch {}
     throw new Error(errorMsg);
   }
-  return res.json();
+  const text = await res.text();
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -27,10 +29,10 @@ async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: s
 export function useApiQuery<TData, TError = Error, TQueryKey extends QueryKey = QueryKey>(
   queryKey: TQueryKey,
   endpoint: string,
-  options?: Omit<UseQueryOptions<TData, TError, TData, TQueryKey>, 'queryKey' | 'queryFn'>,
+  options?: Omit<UseQueryOptions<TData | null, TError, TData | null, TQueryKey>, 'queryKey' | 'queryFn'>,
   fetchOptions?: RequestInit & { method?: string },
 ) {
-  return useQuery<TData, TError, TData, TQueryKey>({
+  return useQuery<TData | null, TError, TData | null, TQueryKey>({
     queryKey,
     queryFn: () => fetcher<TData>(endpoint, { method: 'GET', ...fetchOptions }),
     ...options,
@@ -45,10 +47,10 @@ export function useApiQuery<TData, TError = Error, TQueryKey extends QueryKey = 
  */
 export function useApiMutation<TData, TError = Error, TVariables = void, TContext = unknown>(
   endpoint: string | ((variables: TVariables) => string),
-  options?: Omit<UseMutationOptions<TData, TError, TVariables, TContext>, 'mutationFn'>,
+  options?: Omit<UseMutationOptions<TData | null, TError, TVariables, TContext>, 'mutationFn'>,
   fetchOptions?: RequestInit & { method?: string },
 ) {
-  return useMutation<TData, TError, TVariables, TContext>({
+  return useMutation<TData | null, TError, TVariables, TContext>({
     mutationFn: async (variables: TVariables) => {
       const url = typeof endpoint === 'function' ? endpoint(variables) : endpoint;
       return fetcher<TData>(url, {

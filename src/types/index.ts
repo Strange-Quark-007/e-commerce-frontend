@@ -1,4 +1,3 @@
-// Product type for FakeStoreAPI
 export interface Product {
   id: number;
   title: string; // FakeStoreAPI uses 'title' instead of 'name'

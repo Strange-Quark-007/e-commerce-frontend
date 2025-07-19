@@ -79,8 +79,23 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## Responsive Design & Accessibility
 
-- [ ] Ensure all pages and components are responsive for mobile and desktop [UI]
-- [ ] Use accessible UI components and proper ARIA attributes [UI]
+- [x] Ensure all pages and components are responsive for mobile and desktop [UI]
+- [x] Use accessible UI components and proper ARIA attributes [UI]
+
+## SSR & Page Structure Refactor
+
+- [x] Move all main page files to src/pages as flat files
+- [x] Create SSR wrapper pages in src/app for each route
+- [x] Ensure metadata is only exported from SSR/server components
+- [x] Update all import paths after file moves
+- [x] Check for and fix any linter issues after refactor
+
+### Optimizations
+
+- [x] Robust error handling for missing products and empty API responses on product details page
+- [x] Defensive fetcher for empty API responses (prevents JSON parse errors)
+- [x] Import path cleanup after file moves
+- [x] Linter and type safety improvements throughout codebase
 
 ---
 

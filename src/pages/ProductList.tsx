@@ -1,41 +1,49 @@
 'use client';
 
 import { useProducts, useProductCategories } from '../hooks/useProducts';
+import type { Product } from '../types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useMemo, useEffect } from 'react';
-import ErrorMessage from './ErrorMessage';
-import EmptyState, { DefaultEmptyIcon } from './EmptyState';
-import ProductCard from './ProductCard';
-import { Skeleton } from './ui/skeleton';
-import Container from './Container';
+import ErrorMessage from '../components/ErrorMessage';
+import EmptyState, { DefaultEmptyIcon } from '../components/EmptyState';
+import ProductCard from '../components/ProductCard';
+import { Skeleton } from '../components/ui/skeleton';
+import Container from '../components/Container';
 import { Search, Filter, X } from 'lucide-react';
 import { toTitleCase } from '../lib/utils';
+import { useMediaQuery } from 'react-responsive';
 
-export default function ProductList() {
+export default function ProductListPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category') || '';
+  const categoryParam = searchParams?.get('category') || '';
   const { data: products, isLoading, isError, error, refetch } = useProducts(categoryParam || undefined);
   const { data: categories, isLoading: isCategoriesLoading } = useProductCategories();
   const [search, setSearch] = useState('');
-  // Pagination state
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 8;
+  const isXL = useMediaQuery({ minWidth: 1280 }); // desktop
+  const isLG = useMediaQuery({ minWidth: 1024, maxWidth: 1279 }); // large tablet
+  const isMD = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // tablet
+  let PAGE_SIZE = 8;
+  if (isXL)
+    PAGE_SIZE = 8; // 2x4
+  else if (isMD)
+    PAGE_SIZE = 9; // 3x3
+  else if (isLG)
+    PAGE_SIZE = 8; // 4x2
+  else PAGE_SIZE = 4; // mobile fallback
 
-  // Filter products by search term (case-insensitive, in name/title)
-  const filteredProducts = useMemo(() => {
-    if (!products) return [];
-    if (!search.trim()) return products;
-    return products.filter((p) => p.title.toLowerCase().includes(search.trim().toLowerCase()));
+  const filteredProducts = useMemo<Product[]>(() => {
+    if (!products) return [] as Product[];
+    if (!search.trim()) return products as Product[];
+    return (products as Product[]).filter((p: Product) => p.title.toLowerCase().includes(search.trim().toLowerCase()));
   }, [products, search]);
-  // Paginate filtered products
   const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE) || 1;
   const paginatedProducts = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return filteredProducts.slice(start, start + PAGE_SIZE);
-  }, [filteredProducts, page]);
+  }, [filteredProducts, page, PAGE_SIZE]);
 
-  // Reset to page 1 when search or filter changes
   useEffect(() => {
     setPage(1);
   }, [search, categoryParam]);
@@ -55,12 +63,9 @@ export default function ProductList() {
     return <ErrorMessage message={error?.message || 'Failed to load products.'} onRetry={refetch} />;
   }
 
-  // Always render the search bar and category filter
   return (
     <Container className="h-full flex flex-col py-4 px-2 sm:px-4 lg:px-6">
-      {/* Search bar and category filter (always rendered, never duplicated) */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 gap-y-2 py-2">
-        {/* Category filter left */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 gap-y-3 py-2 pb-4">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500" aria-hidden="true" />
           <label htmlFor="category" className="text-sm font-medium text-gray-700">
@@ -82,7 +87,6 @@ export default function ProductList() {
             ))}
           </select>
         </div>
-        {/* Search bar right */}
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
           <div className="relative w-full sm:w-72">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -111,7 +115,6 @@ export default function ProductList() {
           </div>
         </div>
       </div>
-      {/* Main content: products or empty state */}
       <div className="flex-1 flex flex-col justify-between">
         <div className="flex-1">
           {isLoading ? (
@@ -145,14 +148,13 @@ export default function ProductList() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-4">
-              {paginatedProducts.map((product) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+              {paginatedProducts.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
         </div>
-        {/* Pagination controls always at bottom */}
         <div className="flex justify-center items-center gap-2 mt-4 min-h-[40px]">
           {totalPages > 1 && (
             <>

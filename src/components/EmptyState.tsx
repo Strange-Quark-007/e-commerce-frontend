@@ -19,14 +19,6 @@ const DefaultEmptyIcon = () => (
 
 export { DefaultEmptyIcon };
 
-/**
- * EmptyState component for displaying empty state UI with an illustration, message, and optional action button.
- *
- * @param icon - Optional illustration (SVG or ReactNode). If not provided, a default icon is shown.
- * @param message - The main message to display.
- * @param actionLabel - Optional label for the action button.
- * @param onAction - Optional callback for the action button.
- */
 export default function EmptyState({ icon, message, actionLabel, onAction }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-12">

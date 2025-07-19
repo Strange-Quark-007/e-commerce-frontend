@@ -2,7 +2,7 @@
 
 import { useApiQuery } from './useApi';
 import { API_ENDPOINTS } from '../lib/endpoints';
-import type { Product } from '../types';
+import { Product } from '@/types';
 
 /**
  * React Query hook to fetch all products using the useApiQuery abstraction and endpoint config.
@@ -10,10 +10,11 @@ import type { Product } from '../types';
  * Returns { data, error, isLoading, isError, refetch }
  */
 export function useProducts(category?: string) {
-  if (category) {
-    return useApiQuery<Product[]>(['products', category], API_ENDPOINTS.productsByCategory(category));
-  }
-  return useApiQuery<Product[]>(['products'], API_ENDPOINTS.products);
+  // Always call the hook at the top level
+  return useApiQuery<Product[]>(
+    category ? ['products', category] : ['products'],
+    category ? API_ENDPOINTS.productsByCategory(category) : API_ENDPOINTS.products,
+  );
 }
 
 /**
