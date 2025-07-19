@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Skeleton } from '../components/ui/skeleton';
 import { MAX_CART_ITEMS } from '../lib/constants';
+import CategoryBadge from '../components/CategoryBadge';
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -97,9 +98,7 @@ export default function ProductDetailsPage() {
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           {/* Category and Price (separate lines) */}
           <div className="mb-2">
-            <Badge variant="secondary" className="capitalize mb-2 inline-block">
-              {product.category}
-            </Badge>
+            <CategoryBadge category={product.category} className="mb-2" />
             <div className="text-xl font-semibold text-primary mt-1">${product.price}</div>
           </div>
           {product.rating && (

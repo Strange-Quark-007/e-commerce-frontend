@@ -11,6 +11,7 @@ import EmptyState from '../components/EmptyState';
 import { toTitleCase } from '../lib/utils';
 import Container from '../components/Container';
 import { MAX_CART_ITEMS } from '../lib/constants';
+import CategoryBadge from '../components/CategoryBadge';
 import {
   Dialog,
   DialogContent,
@@ -47,7 +48,7 @@ function CartItemRow({ product, quantity, onRemove, onUpdateQuantity }: CartItem
           <span className="font-semibold text-base text-gray-900 truncate block mb-1" title={product.title}>
             {product.title}
           </span>
-          <span className="text-xs text-gray-600 block mb-2">{toTitleCase(product.category)}</span>
+          <CategoryBadge category={product.category} className="mb-2" />
         </div>
         {/* Right: counter and price */}
         <div className="flex flex-row items-center justify-between gap-2 w-full md:w-auto md:justify-end md:gap-4 md:text-right">
