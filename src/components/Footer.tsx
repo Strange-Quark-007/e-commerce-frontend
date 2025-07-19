@@ -1,17 +1,18 @@
 import React from 'react';
 import { APP_NAME } from '../lib/constants';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
     <footer className="flex flex-col items-center justify-center w-full border-t py-2 text-center text-sm text-muted-foreground bg-background dark:text-zinc-100">
       <nav>
-        <a href="/" className="mx-2 hover:underline font-semibold">
+        <Link href="/" className="mx-2 hover:underline font-semibold">
           Home
-        </a>
+        </Link>
         |
-        <a href="/cart" className="mx-2 hover:underline font-semibold">
+        <Link href="/cart" className="mx-2 hover:underline font-semibold">
           Cart
-        </a>
+        </Link>
       </nav>
       <div>
         <span className="font-bold">{APP_NAME}</span>

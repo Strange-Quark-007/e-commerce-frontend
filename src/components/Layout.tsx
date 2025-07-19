@@ -1,6 +1,5 @@
 import Navbar from './Navbar';
 import React from 'react';
-import Container from './Container';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
