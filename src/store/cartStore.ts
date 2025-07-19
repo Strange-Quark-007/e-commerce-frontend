@@ -5,7 +5,7 @@ import { MAX_CART_ITEMS } from '../lib/constants';
 
 interface CartState {
   items: CartItem[];
-  addToCart: (productId: number, quantity?: number, onMaxQuantityError?: () => void) => boolean;
+  addToCart: (productId: number, quantity?: number) => boolean;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
@@ -26,15 +26,13 @@ export const useCartStore = create<CartState>()(
        * Returns false if max quantity exceeded, true otherwise.
        * @param productId - Product ID to add
        * @param quantity - Quantity to add (default 1)
-       * @param onMaxQuantityError - Optional callback if max quantity is exceeded
        */
-      addToCart: (productId, quantity = 1, onMaxQuantityError) => {
+      addToCart: (productId, quantity = 1) => {
         const state = get();
         const existing = state.items.find((item) => item.productId === productId);
         if (existing) {
           const newQty = existing.quantity + quantity;
           if (newQty > MAX_CART_ITEMS) {
-            if (onMaxQuantityError) onMaxQuantityError();
             return false;
           }
           set({
@@ -43,7 +41,6 @@ export const useCartStore = create<CartState>()(
           return true;
         }
         if (quantity > MAX_CART_ITEMS) {
-          if (onMaxQuantityError) onMaxQuantityError();
           return false;
         }
         set({
