@@ -1,9 +1,10 @@
 import ProductList from '../views/ProductList';
 import { Suspense } from 'react';
 import Spinner from '../components/Spinner';
+import { APP_NAME } from '@/lib/constants';
 
 export const metadata = {
-  title: 'Products | ShopEasy',
+  title: `Products | ${APP_NAME}`,
 };
 
 export default function HomePage() {

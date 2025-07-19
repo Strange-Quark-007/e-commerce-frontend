@@ -6,8 +6,9 @@ import { ShoppingCart, Sun, Moon } from 'lucide-react';
 import { Badge } from './ui/badge';
 import Container from './Container';
 import { useTheme } from 'next-themes';
+import { APP_NAME } from '../lib/constants';
 
-const Logo = () => <span className="font-bold text-xl tracking-tight">ShopEasy</span>;
+const Logo = () => <span className="font-bold text-xl tracking-tight">{APP_NAME}</span>;
 
 export default function Navbar() {
   const { items } = useCart();

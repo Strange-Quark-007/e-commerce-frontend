@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from './ui/button';
+import { useTheme } from 'next-themes';
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -8,14 +9,18 @@ interface EmptyStateProps {
   onAction?: () => void;
 }
 
-const DefaultEmptyIcon = () => (
-  <svg width="48" height="48" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-    <rect x="8" y="16" width="32" height="20" rx="4" fill="#e5e7eb" />
-    <rect x="14" y="22" width="20" height="8" rx="2" fill="#cbd5e1" />
-    <circle cx="18" cy="36" r="2" fill="#cbd5e1" />
-    <circle cx="30" cy="36" r="2" fill="#cbd5e1" />
-  </svg>
-);
+const DefaultEmptyIcon = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  return (
+    <svg width="48" height="48" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="8" y="16" width="32" height="20" rx="4" fill={isDark ? '#27272a' : '#e5e7eb'} />
+      <rect x="14" y="22" width="20" height="8" rx="2" fill={isDark ? '#52525b' : '#cbd5e1'} />
+      <circle cx="18" cy="36" r="2" fill={isDark ? '#52525b' : '#cbd5e1'} />
+      <circle cx="30" cy="36" r="2" fill={isDark ? '#52525b' : '#cbd5e1'} />
+    </svg>
+  );
+};
 
 export { DefaultEmptyIcon };
 
