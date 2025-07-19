@@ -1,6 +1,13 @@
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions, QueryKey } from '@tanstack/react-query';
 import { BASE_URL } from '../lib/endpoints';
 
+/**
+ * Generic fetcher for API requests. Handles errors and empty responses defensively.
+ * @template T - Expected response type
+ * @param endpoint - API endpoint string
+ * @param options - Fetch options (method, headers, etc.)
+ * @returns Parsed JSON or null
+ */
 async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: string }): Promise<T | null> {
   const { method = 'GET', ...rest } = options || {};
   const res = await fetch(`${BASE_URL}${endpoint}`, { method, ...rest });
@@ -22,9 +29,11 @@ async function fetcher<T>(endpoint: string, options?: RequestInit & { method?: s
 
 /**
  * Wrapper for React Query's useQuery, handling fetch and errors internally.
- * @param endpoint - API endpoint string
- * @param options - Optional React Query options
- * @param fetchOptions - Optional fetch options (method defaults to GET)
+ * @template TData, TError, TQueryKey
+ * @param queryKey - React Query key
+ * @param endpoint - API endpoint
+ * @param options - React Query options
+ * @param fetchOptions - Fetch options
  */
 export function useApiQuery<TData, TError = Error, TQueryKey extends QueryKey = QueryKey>(
   queryKey: TQueryKey,
@@ -41,9 +50,10 @@ export function useApiQuery<TData, TError = Error, TQueryKey extends QueryKey = 
 
 /**
  * Wrapper for React Query's useMutation, handling fetch and errors internally.
+ * @template TData, TError, TVariables, TContext
  * @param endpoint - API endpoint string or function
- * @param options - Optional React Query options
- * @param fetchOptions - Optional fetch options (method defaults to POST)
+ * @param options - React Query options
+ * @param fetchOptions - Fetch options
  */
 export function useApiMutation<TData, TError = Error, TVariables = void, TContext = unknown>(
   endpoint: string | ((variables: TVariables) => string),

@@ -101,6 +101,6 @@ A comprehensive, implementation-ready checklist for the e-commerce frontend proj
 
 ## Documentation & Code Quality
 
-- [ ] Document key components, hooks, and store logic [Setup]
-- [ ] Add code comments for complex logic [Setup]
-- [ ] Ensure codebase passes ESLint and Prettier checks [Setup]
+- [x] Document key components, hooks, and store logic [Setup]
+- [x] Add code comments for complex logic [Setup]
+- [x] Ensure codebase passes ESLint and Prettier checks [Setup]
