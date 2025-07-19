@@ -41,3 +41,4 @@ This project is a modern e-commerce frontend built with Next.js, TypeScript, Tai
 - [UX-GUIDELINES.md](UX-GUIDELINES.md) — UX and UI guidelines
 - [TASKS.md](TASKS.md) — Implementation checklist and progress tracking
 - [Project-structure.md](Project-structure.md) — Project structure
+- [Cursor-Chat-Export.md](Cursor-Chat-Export.md) — Single file with all chat history

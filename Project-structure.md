@@ -13,6 +13,7 @@ This document describes the organization of the E-Commerce Frontend project, sta
 - [TASKS.md](TASKS.md) — Implementation checklist and progress tracking
 - [Project-structure.md](Project-structure.md) — Project structure
 - [README.md](README.md) — Project overview and setup instructions
+- [Cursor-Chat-Export.md](Cursor-Chat-Export.md) — Single file with all chat history
 
 - **/src/** — Main source code
 - **/public/** — Static assets (SVGs, images, etc.)
