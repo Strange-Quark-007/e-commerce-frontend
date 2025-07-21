@@ -17771,3 +17771,36 @@ All non-UI files in `src/components` now have:
 No changes were needed for `Container.tsx` and `Spinner.tsx` as they have no local imports.
 
 If you want to apply this convention to other directories (e.g., `src/hooks`, `src/lib`, `src/types`, or `src/views`), let me know!
+
+---
+
+**User**
+
+In the readme, mention about build step and starting production build locally
+
+---
+
+**Cursor**
+
+````markdown
+Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+3. **Build for production:**
+   ```sh
+   pnpm build
+   ```
+````
+
+This will generate an optimized production build in the `.next` directory.
+
+4. **Start the production server locally:**
+   ```sh
+   pnpm start
+   ```
+   The app will run at [http://localhost:3000](http://localhost:3000) in production mode.
+
+```
+
+I've updated the README to include instructions for building the project and starting the production build locally. The new section explains how to run `pnpm build` to generate an optimized production build and `pnpm start` to serve it locally in production mode. Let me know if you want any further adjustments!
+
+```

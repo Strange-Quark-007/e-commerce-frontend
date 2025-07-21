@@ -18,10 +18,26 @@ This project is a modern e-commerce frontend built with Next.js, TypeScript, Tai
    ```
 
 2. **Run the development server:**
+
    ```sh
    pnpm dev
    ```
+
    Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+3. **Build for production:**
+
+   ```sh
+   pnpm build
+   ```
+
+   This will generate an optimized production build in the `.next` directory.
+
+4. **Start the production server locally:**
+   ```sh
+   pnpm start
+   ```
+   The app will run at [http://localhost:3000](http://localhost:3000) in production mode.
 
 ### Included Tooling
 
