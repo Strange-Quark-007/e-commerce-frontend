@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ShoppingCart, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 import { useCart } from '@/hooks/useCart';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +15,10 @@ const Logo = () => <span className="font-bold text-xl tracking-tight">{APP_NAME}
 export default function Navbar() {
   const { items } = useCart();
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -38,14 +43,16 @@ export default function Navbar() {
                 </Badge>
               </span>
             </Link>
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="ml-2 p-2 rounded-full hover:bg-accent transition-colors focus:outline-none"
-              type="button"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="ml-2 p-2 rounded-full hover:bg-accent transition-colors focus:outline-none"
+                type="button"
+              >
+                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+            )}
           </div>
         </div>
       </Container>
