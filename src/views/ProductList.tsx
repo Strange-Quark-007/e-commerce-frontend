@@ -15,7 +15,6 @@ import Container from '@/components/Container';
 import { toTitleCase } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import {
-  APP_NAME,
   DEFAULT_PAGE,
   PAGE_SIZE_DESKTOP,
   PAGE_SIZE_TABLET,

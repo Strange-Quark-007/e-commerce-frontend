@@ -3,7 +3,6 @@ import Image from 'next/image';
 
 import type { Product } from '@/types';
 import { Card } from '@/components/ui/card';
-import { toTitleCase } from '@/lib/utils';
 import CategoryBadge from './CategoryBadge';
 
 interface ProductCardProps {

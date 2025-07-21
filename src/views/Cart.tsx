@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import Spinner from '@/components/Spinner';
 import EmptyState from '@/components/EmptyState';
 import Container from '@/components/Container';
-import { MAX_QUANTITY_PER_ITEM, MIN_QUANTITY_PER_ITEM } from '@/lib/constants';
+import { MAX_QUANTITY_PER_ITEM } from '@/lib/constants';
 import CategoryBadge from '@/components/CategoryBadge';
 import {
   Dialog,
